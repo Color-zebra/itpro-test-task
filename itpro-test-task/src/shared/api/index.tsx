@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 const LANG = "en";
 
 export type getNewsParams = {
-  search: string | null;
+  q: string | null;
   sort: string | null;
   pageSize: string;
   page: string;

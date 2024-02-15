@@ -1,4 +1,8 @@
 .wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50dvh;
 
   & div[class="ant-table-container"] {
     max-height: calc(100vh - 104px);
