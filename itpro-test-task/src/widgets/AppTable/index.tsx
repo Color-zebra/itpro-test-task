@@ -8,6 +8,7 @@ import { useSearchParams } from "react-router-dom";
 import s from "./styles.module.scss";
 import { SORT_PARAM_NAME } from "@/entities/SortPicker";
 import { SEARCH_PARAM_NAME } from "@/entities/SearchBar";
+import { PAGE_SIZE_PARAM_NAME } from "@/entities/PageSizePicker";
 
 interface DataType extends Record<keyof typeof Columns, string | null> {
   key: string;
@@ -32,17 +33,32 @@ export const AppTable = () => {
   const { shownColumns } = useColumns((store) => store);
   const [data, setData] = useState<DataType[]>([]);
   const [totalItems, setTotalItems] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [searchParams] = useSearchParams();
+  const pageSize = Number(searchParams.get(PAGE_SIZE_PARAM_NAME));
+
+  const handlePageChange = (val: number) => {
+    setCurrentPage(val);
+  };
 
   useEffect(() => {
     const sort = searchParams.get(SORT_PARAM_NAME);
     const search = searchParams.get(SEARCH_PARAM_NAME);
 
-    $api.getNews({ search, sort }).then((data) => {
-      setData(prepareData(data.data.articles));
-      setTotalItems(data.data.totalResults);
-    });
-  }, [searchParams]);
+    $api
+      .getNews({
+        search,
+        sort,
+        page: String(currentPage),
+        pageSize: String(pageSize),
+      })
+      .then((data) => {
+        console.log(data.data);
+
+        setData(prepareData(data.data.articles));
+        setTotalItems(data.data.totalResults);
+      });
+  }, [currentPage, pageSize, searchParams]);
 
   const columns = useMemo(
     () =>
@@ -73,7 +89,11 @@ export const AppTable = () => {
   return (
     <div className={s.wrapper}>
       <Table
-        pagination={{ pageSize: 5, total: totalItems }}
+        pagination={{
+          pageSize: pageSize,
+          total: totalItems,
+          onChange: handlePageChange,
+        }}
         columns={columns}
         dataSource={data}
       />

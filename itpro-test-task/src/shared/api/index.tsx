@@ -13,6 +13,8 @@ const LANG = "en";
 export type getNewsParams = {
   search: string | null;
   sort: string | null;
+  pageSize: string;
+  page: string;
 };
 
 const $api = {
@@ -30,7 +32,6 @@ const $api = {
       params: urlParams,
     });
   },
-  /* getSources: () => axiosInstance.get("top-headlines/sources"), */
 };
 
 export default $api;
