@@ -1,0 +1,9 @@
+.wrapper {
+
+  & div[class="ant-table-container"] {
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--main-color) white;
+  }
+}

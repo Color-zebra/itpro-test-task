@@ -1,4 +1,5 @@
 import axios from "axios";
+import { GetEverythingResponse } from "../types/apiTypes";
 
 const axiosInstance = axios.create({
   baseURL: "https://newsapi.org/v2/",
@@ -8,7 +9,8 @@ const axiosInstance = axios.create({
 });
 
 const $api = {
-  getNews: () => axiosInstance.get("top-headlines"),
+  getNews: () =>
+    axiosInstance.get<GetEverythingResponse>("top-headlines?language=ru"),
   getSources: () => axiosInstance.get("top-headlines/sources"),
 };
 
