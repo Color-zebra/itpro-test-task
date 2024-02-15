@@ -13,6 +13,7 @@ export const ColumnPicker = () => {
   const handleChange = (value: Columns[]) => {
     updateColumns(value);
   };
+
   return (
     <div className={s.wrapper}>
       <div className={s.title}>Колонки</div>
