@@ -1,0 +1,11 @@
+.wrapper {
+  position: relative;
+}
+
+.title {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  z-index: 1;
+}
