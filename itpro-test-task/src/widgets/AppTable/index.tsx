@@ -35,7 +35,7 @@ export const AppTable = () => {
   const { setIsError, setIsLoading, isLoading } = useAppState((state) => state);
   const [data, setData] = useState<DataType[]>([]);
   const [totalItems, setTotalItems] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchParams] = useSearchParams();
   const pageSize = Number(searchParams.get(PAGE_SIZE_PARAM_NAME));
 
@@ -44,14 +44,14 @@ export const AppTable = () => {
   };
 
   useEffect(() => {
-    const sort = searchParams.get(SORT_PARAM_NAME);
+    const sortBy = searchParams.get(SORT_PARAM_NAME);
     const q = searchParams.get(SEARCH_PARAM_NAME);
     setIsLoading(true);
 
     $api
       .getNews({
         q,
-        sort,
+        sortBy,
         page: String(currentPage),
         pageSize: String(pageSize),
       })

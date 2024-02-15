@@ -8,11 +8,11 @@ const axiosInstance = axios.create({
   },
 });
 
-const LANG = "en";
+const LANG = "google-news";
 
 export type getNewsParams = {
   q: string | null;
-  sort: string | null;
+  sortBy: string | null;
   pageSize: string;
   page: string;
 };
@@ -26,9 +26,9 @@ const $api = {
         urlParams.append(param[0], param[1]);
       }
     });
-    urlParams.append("language", LANG);
+    urlParams.append("sources", LANG);
 
-    return axiosInstance.get<GetEverythingResponse>("top-headlines", {
+    return axiosInstance.get<GetEverythingResponse>("everything", {
       params: urlParams,
     });
   },
