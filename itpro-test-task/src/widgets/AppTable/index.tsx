@@ -6,6 +6,8 @@ import { Table } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import s from "./styles.module.scss";
+import { SORT_PARAM_NAME } from "@/entities/SortPicker";
+import { SEARCH_PARAM_NAME } from "@/entities/SearchBar";
 
 interface DataType extends Record<keyof typeof Columns, string | null> {
   key: string;
@@ -24,15 +26,21 @@ const prepareData = (responseData: ResponseArticle[]): DataType[] => {
   }));
 };
 
+const READ_MORE_BUTTON_TEXT = "Читать полностью";
+
 export const AppTable = () => {
   const { shownColumns } = useColumns((store) => store);
   const [data, setData] = useState<DataType[]>([]);
+  const [totalItems, setTotalItems] = useState(0);
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    console.log(searchParams.getAll);
-    $api.getNews().then((data) => {
+    const sort = searchParams.get(SORT_PARAM_NAME);
+    const search = searchParams.get(SEARCH_PARAM_NAME);
+
+    $api.getNews({ search, sort }).then((data) => {
       setData(prepareData(data.data.articles));
+      setTotalItems(data.data.totalResults);
     });
   }, [searchParams]);
 
@@ -49,7 +57,7 @@ export const AppTable = () => {
           render: (text: string) =>
             columnKey === "url" ? (
               <a target="_blank" href={text}>
-                Читать дальше
+                {READ_MORE_BUTTON_TEXT}
               </a>
             ) : (
               text
@@ -64,7 +72,11 @@ export const AppTable = () => {
   }
   return (
     <div className={s.wrapper}>
-      <Table columns={columns} dataSource={data} />
+      <Table
+        pagination={{ pageSize: 5, total: totalItems }}
+        columns={columns}
+        dataSource={data}
+      />
     </div>
   );
 };

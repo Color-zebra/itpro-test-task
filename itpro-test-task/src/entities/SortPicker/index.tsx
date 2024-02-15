@@ -13,7 +13,7 @@ const isSort = (val: string): val is SortTypes => {
   return Object.keys(SortTypes).includes(val);
 };
 
-const SORT_PARAM_NAME = "sort";
+export const SORT_PARAM_NAME = "sort";
 
 export const SortPicker = () => {
   const [searchParams, setSearchParams] = useSearchParams();

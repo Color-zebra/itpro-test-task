@@ -8,10 +8,29 @@ const axiosInstance = axios.create({
   },
 });
 
+const LANG = "en";
+
+export type getNewsParams = {
+  search: string | null;
+  sort: string | null;
+};
+
 const $api = {
-  getNews: () =>
-    axiosInstance.get<GetEverythingResponse>("top-headlines?language=ru"),
-  getSources: () => axiosInstance.get("top-headlines/sources"),
+  getNews: (params: getNewsParams) => {
+    const urlParams = new URLSearchParams();
+
+    Object.entries(params).forEach((param) => {
+      if (param[1]) {
+        urlParams.append(param[0], param[1]);
+      }
+    });
+    urlParams.append("language", LANG);
+
+    return axiosInstance.get<GetEverythingResponse>("top-headlines", {
+      params: urlParams,
+    });
+  },
+  /* getSources: () => axiosInstance.get("top-headlines/sources"), */
 };
 
 export default $api;
